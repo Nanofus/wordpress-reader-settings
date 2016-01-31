@@ -32,7 +32,6 @@ saveData = ->
     saveCookie("wrs-enabled", "true", 365)
   else
     saveCookie("wrs-enabled", "false", 365)
-  event.stopPropagation()
   location.reload();
 
 resetData = ->
@@ -47,7 +46,6 @@ resetData = ->
     document.getElementById("wrs-enabled").checked = true
   else
     document.getElementById("wrs-enabled").checked = false
-  event.stopPropagation()
   saveData()
 
 loadData = ->

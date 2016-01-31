@@ -43,7 +43,6 @@ saveData = function() {
   } else {
     saveCookie("wrs-enabled", "false", 365);
   }
-  event.stopPropagation();
   return location.reload();
 };
 
@@ -60,7 +59,6 @@ resetData = function() {
   } else {
     document.getElementById("wrs-enabled").checked = false;
   }
-  event.stopPropagation();
   return saveData();
 };
 

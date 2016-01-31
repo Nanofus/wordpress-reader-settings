@@ -1,6 +1,6 @@
 <!-- Example widget contents for http://klaanon.bioklaani.fi/ -->
 
-<p>Tämän möllykän avulla voi säätää Klaanon-lukukokemusta.</p>
+<p>Näiden asetusten avulla voi säätää Klaanon-lukukokemusta.</p>
 
 <form>
   <span style="float:left;">Fontin koko:</span><select style="width: 6rem;float:right;" id="wrs-font-size">
@@ -85,7 +85,6 @@ saveData = function() {
   } else {
     saveCookie("wrs-enabled", "false", 365);
   }
-  event.stopPropagation();
   return location.reload();
 };
 
@@ -102,7 +101,6 @@ resetData = function() {
   } else {
     document.getElementById("wrs-enabled").checked = false;
   }
-  event.stopPropagation();
   return saveData();
 };
 
@@ -231,27 +229,27 @@ loadData();
   font-size: 150%;
 }
 
-div .entry-content .wps-400px {
+.wps-400px {
   width: 400px !important;
   max-width: 400px !important;
   min-width: 400px !important;
 }
-div .entry-content .wps-500px {
+.wps-500px {
   width: 500px !important;
   max-width: 500px !important;
   min-width: 500px !important;
 }
-div .entry-content .wps-600px {
+.wps-600px {
   width: 600px !important;
   max-width: 600px !important;
   min-width: 600px !important;
 }
-div .entry-content .wps-700px {
+.wps-700px {
   width: 700px !important;
   max-width: 700px !important;
   min-width: 700px !important;
 }
-div .entry-content .wps-800px {
+.wps-800px {
   width: 800px !important;
   max-width: 800px !important;
   min-width: 800px !important;
