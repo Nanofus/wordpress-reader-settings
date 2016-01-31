@@ -17,21 +17,37 @@
   Fontti: <select style="width: 6rem;" id="wrs-font">
     <option value="Times New Roman" selected="selected">Times New Roman</option>
     <option value="Arial">Arial</option>
+    <option value="Open Sans">Open Sans</option>
+    <option value="Roboto">Roboto</option>
+    <option value="Slabo 27px">Slabo 27px</option>
+    <option value="Source Sans Pro">Source Sans Pro</option>
+    <option value="Droid Sans">Droid Sans</option>
   </select><br>
   Lukualueen leveys: <select style="width: 6rem;" id="wrs-content-width">
-    <option value="406px">406px</option>
-    <option value="506px">506px</option>
-    <option value="606px" selected="selected">606px</option>
-    <option value="706px">706px</option>
-    <option value="806px">806px</option>
+    <option value="400px">400px</option>
+    <option value="500px">500px</option>
+    <option value="600px" selected="selected">600px</option>
+    <option value="700px">700px</option>
+    <option value="800px">800px</option>
   </select><br>
+  Käytössä: <input type="checkbox" name="enabled" value="enabled" checked id="wrs-enabled"><br>
 </form>
 <button style="margin-top:0.2rem;" onclick="saveData();">Tallenna</button>
 <button style="margin-top:0.2rem;" onclick="resetData();">Resetoi</button>
 
-<!-- Ja Manu, tätä koodia tässä ei saa muokata, jos muokkauksia kaivataan niin koodi on Githubissa: http://github.com/Nanofus/wordpress-reader-settings -->
+<link href='https://fonts.googleapis.com/css?family=Open+Sans|Roboto|Slabo+27px|Source+Sans+Pro|Droid+Sans' rel='stylesheet' type='text/css'>
+
+<!-- ÄLKÄÄ MUOKATKO. Laittakaa viestiä tai forkatkaa GitHub-repo jos on valittamista. http://github.com/Nanofus/wordpress-reader-settings -->
 <script>
-var loadCookie, loadData, saveCookie, saveData;
+var enabled, loadCookie, loadData, replaceCss, resetData, saveCookie, saveData, size, typeface, width;
+
+typeface = '';
+
+size = '';
+
+width = '';
+
+enabled = true;
 
 loadCookie = function(cname) {
   var c, ca, i, name;
@@ -56,27 +72,188 @@ saveCookie = function(cname, cvalue, exdays) {
   d = new Date;
   d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
   expires = 'expires=' + d.toUTCString();
-  document.cookie = cname + '=' + cvalue + '; ' + expires;
-  return console.log(document.cookie);
+  return document.cookie = cname + '=' + cvalue + '; ' + expires + ';domain=klaanon.bioklaani.fi;path=/';
 };
 
 saveData = function() {
   saveCookie("wrs-typeface", document.getElementById("wrs-font").value, 365);
   saveCookie("wrs-size", document.getElementById("wrs-font-size").value, 365);
-  return saveCookie("wrs-width", document.getElementById("wrs-content-width").value, 365);
+  saveCookie("wrs-width", document.getElementById("wrs-content-width").value, 365);
+  if (document.getElementById("wrs-enabled").checked) {
+    saveCookie("wrs-enabled", "true", 365);
+  } else {
+    saveCookie("wrs-enabled", "false", 365);
+  }
+  event.stopPropagation();
+  return location.reload();
+};
+
+resetData = function() {
+  typeface = "Times New Roman";
+  size = "100%";
+  width = "600px";
+  enabled = "true";
+  document.getElementById("wrs-font").value = typeface;
+  document.getElementById("wrs-font-size").value = size;
+  document.getElementById("wrs-content-width").value = width;
+  if (enabled === "true") {
+    document.getElementById("wrs-enabled").checked = true;
+  } else {
+    document.getElementById("wrs-enabled").checked = false;
+  }
+  event.stopPropagation();
+  return saveData();
 };
 
 loadData = function() {
-  var size, typeface, width;
   typeface = loadCookie("wrs-typeface");
   size = loadCookie("wrs-size");
   width = loadCookie("wrs-width");
-  console.log(typeface + ", " + size + ", " + width);
+  enabled = loadCookie("wrs-enabled");
+  if (typeface === '') {
+    typeface = "Times New Roman";
+  }
+  if (size === '') {
+    size = "100%";
+  }
+  if (width === '') {
+    width = "600px";
+  }
+  if (enabled === '') {
+    enabled = "true";
+  }
   document.getElementById("wrs-font").value = typeface;
   document.getElementById("wrs-font-size").value = size;
-  return document.getElementById("wrs-content-width").value = width;
+  document.getElementById("wrs-content-width").value = width;
+  if (enabled === "true") {
+    document.getElementById("wrs-enabled").checked = true;
+  } else {
+    document.getElementById("wrs-enabled").checked = false;
+  }
+  if (enabled === "true") {
+    return replaceCss();
+  }
+};
+
+replaceCss = function() {
+  var content, contentChildren, d, i, j, len, paragraphs, results;
+  content = document.getElementsByClassName("entry-content")[0];
+  content.classList.add("wps-" + width);
+  contentChildren = content.childNodes;
+  i = 0;
+  paragraphs = [];
+  while (i < contentChildren.length) {
+    if (contentChildren[i].nodeName === 'P') {
+      paragraphs.push(contentChildren[i]);
+    }
+    if (contentChildren[i].nodeType === 1) {
+      contentChildren[i].classList.add("wps-" + size.substring(0, size.length - 1));
+    }
+    i++;
+  }
+  results = [];
+  for (i = j = 0, len = paragraphs.length; j < len; i = ++j) {
+    d = paragraphs[i];
+    if (typeface === "Times New Roman") {
+      results.push(d.classList.add("wps-times"));
+    } else if (typeface === "Arial") {
+      results.push(d.classList.add("wps-arial"));
+    } else if (typeface === "Open Sans") {
+      results.push(d.classList.add("wps-opensans"));
+    } else if (typeface === "Roboto") {
+      results.push(d.classList.add("wps-roboto"));
+    } else if (typeface === "Slabo 27px") {
+      results.push(d.classList.add("wps-slabo"));
+    } else if (typeface === "Source Sans Pro") {
+      results.push(d.classList.add("wps-source"));
+    } else if (typeface === "Droid Sans") {
+      results.push(d.classList.add("wps-droid"));
+    } else {
+      results.push(void 0);
+    }
+  }
+  return results;
 };
 
 loadData();
 
 </script>
+
+<style>
+.wps-times {
+  font-family: "Times New Roman";
+}
+.wps-arial {
+  font-family: "Arial";
+}
+.wps-opensans {
+  font-family: 'Open Sans', sans-serif;
+}
+.wps-roboto {
+  font-family: 'Roboto', sans-serif;
+}
+.wps-slabo {
+  font-family: 'Slabo 27px', serif;
+}
+.wps-source {
+  font-family: 'Source Sans Pro', sans-serif;
+}
+.wps-droid {
+  font-family: 'Droid Sans', sans-serif;
+}
+
+.wps-70 {
+  font-size: 70%;
+}
+.wps-80 {
+  font-size: 80%;
+}
+.wps-90 {
+  font-size: 90%;
+}
+.wps-100 {
+  font-size: 100%;
+}
+.wps-110 {
+  font-size: 110%;
+}
+.wps-120 {
+  font-size: 120%;
+}
+.wps-130 {
+  font-size: 130%;
+}
+.wps-140 {
+  font-size: 140%;
+}
+.wps-150 {
+  font-size: 150%;
+}
+
+div .entry-content .wps-400px {
+  width: 400px !important;
+  max-width: 400px !important;
+  min-width: 400px !important;
+}
+div .entry-content .wps-500px {
+  width: 500px !important;
+  max-width: 500px !important;
+  min-width: 500px !important;
+}
+div .entry-content .wps-600px {
+  width: 600px !important;
+  max-width: 600px !important;
+  min-width: 600px !important;
+}
+div .entry-content .wps-700px {
+  width: 700px !important;
+  max-width: 700px !important;
+  min-width: 700px !important;
+}
+div .entry-content .wps-800px {
+  width: 800px !important;
+  max-width: 800px !important;
+  min-width: 800px !important;
+}
+
+</style>

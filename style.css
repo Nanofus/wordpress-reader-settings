@@ -4,6 +4,21 @@
 .wps-arial {
   font-family: "Arial";
 }
+.wps-opensans {
+  font-family: 'Open Sans', sans-serif;
+}
+.wps-roboto {
+  font-family: 'Roboto', sans-serif;
+}
+.wps-slabo {
+  font-family: 'Slabo 27px', serif;
+}
+.wps-source {
+  font-family: 'Source Sans Pro', sans-serif;
+}
+.wps-droid {
+  font-family: 'Droid Sans', sans-serif;
+}
 
 .wps-70 {
   font-size: 70%;
@@ -31,4 +46,30 @@
 }
 .wps-150 {
   font-size: 150%;
+}
+
+div .entry-content .wps-400px {
+  width: 400px !important;
+  max-width: 400px !important;
+  min-width: 400px !important;
+}
+div .entry-content .wps-500px {
+  width: 500px !important;
+  max-width: 500px !important;
+  min-width: 500px !important;
+}
+div .entry-content .wps-600px {
+  width: 600px !important;
+  max-width: 600px !important;
+  min-width: 600px !important;
+}
+div .entry-content .wps-700px {
+  width: 700px !important;
+  max-width: 700px !important;
+  min-width: 700px !important;
+}
+div .entry-content .wps-800px {
+  width: 800px !important;
+  max-width: 800px !important;
+  min-width: 800px !important;
 }
