@@ -1,4 +1,6 @@
-
+# Workaround to disable the system on front page, disabled by default
+rootPath = "/"
+rootPathCheck = false
 
 typeface = '';
 size = '';
@@ -72,31 +74,32 @@ loadData = ->
     replaceCss()
 
 replaceCss = ->
-  content = document.getElementsByClassName("entry-content")[0]
-  content.classList.add("wps-"+width)
-  contentChildren = content.childNodes
-  i = 0
-  paragraphs = []
-  while i < contentChildren.length
-    if contentChildren[i].nodeName == 'P'
-      paragraphs.push contentChildren[i]
-    if contentChildren[i].nodeType == 1
-      contentChildren[i].classList.add("wps-" + size.substring(0, size.length - 1));
-    i++
-  for d, i in paragraphs
-    if (typeface == "Times New Roman")
-      d.classList.add("wps-times")
-    else if (typeface == "Arial")
-      d.classList.add("wps-arial")
-    else if (typeface == "Open Sans")
-      d.classList.add("wps-opensans")
-    else if (typeface == "Roboto")
-      d.classList.add("wps-roboto")
-    else if (typeface == "Slabo 27px")
-      d.classList.add("wps-slabo")
-    else if (typeface == "Source Sans Pro")
-      d.classList.add("wps-source")
-    else if (typeface == "Droid Sans")
-      d.classList.add("wps-droid")
+  if !rootPathCheck || (window.location.pathname != rootPath && rootPathCheck)
+    content = document.getElementsByClassName("entry-content")[0]
+    content.classList.add("wps-"+width)
+    contentChildren = content.childNodes
+    i = 0
+    paragraphs = []
+    while i < contentChildren.length
+      if contentChildren[i].nodeName == 'P'
+        paragraphs.push contentChildren[i]
+      if contentChildren[i].nodeType == 1
+        contentChildren[i].classList.add("wps-" + size.substring(0, size.length - 1));
+      i++
+    for d, i in paragraphs
+      if (typeface == "Times New Roman")
+        d.classList.add("wps-times")
+      else if (typeface == "Arial")
+        d.classList.add("wps-arial")
+      else if (typeface == "Open Sans")
+        d.classList.add("wps-opensans")
+      else if (typeface == "Roboto")
+        d.classList.add("wps-roboto")
+      else if (typeface == "Slabo 27px")
+        d.classList.add("wps-slabo")
+      else if (typeface == "Source Sans Pro")
+        d.classList.add("wps-source")
+      else if (typeface == "Droid Sans")
+        d.classList.add("wps-droid")
 
 loadData()

@@ -40,7 +40,11 @@
 
 <!-- ÄLKÄÄ MUOKATKO. Laittakaa viestiä tai forkatkaa GitHub-repo jos on valittamista. http://github.com/Nanofus/wordpress-reader-settings -->
 <script>
-var enabled, loadCookie, loadData, replaceCss, resetData, saveCookie, saveData, size, typeface, width;
+var enabled, loadCookie, loadData, replaceCss, resetData, rootPath, rootPathCheck, saveCookie, saveData, size, typeface, width;
+
+rootPath = "/";
+
+rootPathCheck = false;
 
 typeface = '';
 
@@ -136,42 +140,44 @@ loadData = function() {
 
 replaceCss = function() {
   var content, contentChildren, d, i, j, len, paragraphs, results;
-  content = document.getElementsByClassName("entry-content")[0];
-  content.classList.add("wps-" + width);
-  contentChildren = content.childNodes;
-  i = 0;
-  paragraphs = [];
-  while (i < contentChildren.length) {
-    if (contentChildren[i].nodeName === 'P') {
-      paragraphs.push(contentChildren[i]);
+  if (!rootPathCheck || (window.location.pathname !== rootPath && rootPathCheck)) {
+    content = document.getElementsByClassName("entry-content")[0];
+    content.classList.add("wps-" + width);
+    contentChildren = content.childNodes;
+    i = 0;
+    paragraphs = [];
+    while (i < contentChildren.length) {
+      if (contentChildren[i].nodeName === 'P') {
+        paragraphs.push(contentChildren[i]);
+      }
+      if (contentChildren[i].nodeType === 1) {
+        contentChildren[i].classList.add("wps-" + size.substring(0, size.length - 1));
+      }
+      i++;
     }
-    if (contentChildren[i].nodeType === 1) {
-      contentChildren[i].classList.add("wps-" + size.substring(0, size.length - 1));
+    results = [];
+    for (i = j = 0, len = paragraphs.length; j < len; i = ++j) {
+      d = paragraphs[i];
+      if (typeface === "Times New Roman") {
+        results.push(d.classList.add("wps-times"));
+      } else if (typeface === "Arial") {
+        results.push(d.classList.add("wps-arial"));
+      } else if (typeface === "Open Sans") {
+        results.push(d.classList.add("wps-opensans"));
+      } else if (typeface === "Roboto") {
+        results.push(d.classList.add("wps-roboto"));
+      } else if (typeface === "Slabo 27px") {
+        results.push(d.classList.add("wps-slabo"));
+      } else if (typeface === "Source Sans Pro") {
+        results.push(d.classList.add("wps-source"));
+      } else if (typeface === "Droid Sans") {
+        results.push(d.classList.add("wps-droid"));
+      } else {
+        results.push(void 0);
+      }
     }
-    i++;
+    return results;
   }
-  results = [];
-  for (i = j = 0, len = paragraphs.length; j < len; i = ++j) {
-    d = paragraphs[i];
-    if (typeface === "Times New Roman") {
-      results.push(d.classList.add("wps-times"));
-    } else if (typeface === "Arial") {
-      results.push(d.classList.add("wps-arial"));
-    } else if (typeface === "Open Sans") {
-      results.push(d.classList.add("wps-opensans"));
-    } else if (typeface === "Roboto") {
-      results.push(d.classList.add("wps-roboto"));
-    } else if (typeface === "Slabo 27px") {
-      results.push(d.classList.add("wps-slabo"));
-    } else if (typeface === "Source Sans Pro") {
-      results.push(d.classList.add("wps-source"));
-    } else if (typeface === "Droid Sans") {
-      results.push(d.classList.add("wps-droid"));
-    } else {
-      results.push(void 0);
-    }
-  }
-  return results;
 };
 
 loadData();
