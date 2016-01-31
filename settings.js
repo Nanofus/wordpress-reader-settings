@@ -1,14 +1,10 @@
-var loadCookie, readData, saveCookie, size, typeface;
+var loadCookie, loadData, replaceCss, resetData, saveCookie, saveData, size, typeface, width;
 
-typeface = "Times New Roman";
+typeface = '';
 
-size = "100%";
+size = '';
 
-readData = function() {
-  typeface = loadCookie("typeface");
-  size = loadCookie("size");
-  return console.log(typeface + ", " + loadCookie(typeface));
-};
+width = '';
 
 loadCookie = function(cname) {
   var c, ca, i, name;
@@ -33,10 +29,64 @@ saveCookie = function(cname, cvalue, exdays) {
   d = new Date;
   d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
   expires = 'expires=' + d.toUTCString();
-  document.cookie = cname + '=' + cvalue + '; ' + expires;
-  return console.log(document.cookie);
+  return document.cookie = cname + '=' + cvalue + '; ' + expires;
 };
 
-saveCookie("typeface", "Times New Roman", 365);
+saveData = function() {
+  saveCookie("wrs-typeface", document.getElementById("wrs-font").value, 365);
+  saveCookie("wrs-size", document.getElementById("wrs-font-size").value, 365);
+  saveCookie("wrs-width", document.getElementById("wrs-content-width").value, 365);
+  event.stopPropagation();
+  return loadData();
+};
 
-readData();
+resetData = function() {
+  typeface = "Times New Roman";
+  size = "100%";
+  width = "606px";
+  document.getElementById("wrs-font").value = typeface;
+  document.getElementById("wrs-font-size").value = size;
+  document.getElementById("wrs-content-width").value = width;
+  event.stopPropagation();
+  return saveData();
+};
+
+loadData = function() {
+  typeface = loadCookie("wrs-typeface");
+  size = loadCookie("wrs-size");
+  width = loadCookie("wrs-width");
+  if (typeface === '') {
+    typeface = "Times New Roman";
+  }
+  if (size === '') {
+    size = "100%";
+  }
+  if (width === '') {
+    width = "606px";
+  }
+  document.getElementById("wrs-font").value = typeface;
+  document.getElementById("wrs-font-size").value = size;
+  document.getElementById("wrs-content-width").value = width;
+  return replaceCss();
+};
+
+replaceCss = function() {
+  var content, d, i, j, len, paragraphs;
+  content = document.getElementsByClassName("entry-content")[0];
+  paragraphs = content.getElementsByTagName("p");
+  for (i = j = 0, len = paragraphs.length; j < len; i = ++j) {
+    d = paragraphs[i];
+    console.log(d);
+    if (typeface === "Times New Roman") {
+      d.classList.add("wps-times");
+    } else if (typeface === "Arial") {
+      d.classList.add("wps-arial");
+    }
+    d.classList.add("wps-" + size.substring(0, size.length - 1));
+  }
+  content.style.width = width + "!important";
+  content.style.maxWidth = width + "!important";
+  return content.style.minWidth = width + "!important";
+};
+
+loadData();

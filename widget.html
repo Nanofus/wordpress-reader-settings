@@ -25,23 +25,13 @@
     <option value="706px">706px</option>
     <option value="806px">806px</option>
   </select><br>
-  <input type="submit" value="Tallenna" style="margin-top:0.2rem;">
-  <input type="submit" value="Resetoi" style="margin-top:0.2rem;">
 </form>
+<button style="margin-top:0.2rem;" onclick="saveData();">Tallenna</button>
+<button style="margin-top:0.2rem;" onclick="resetData();">Resetoi</button>
 
 <!-- Ja Manu, tätä koodia tässä ei saa muokata, jos muokkauksia kaivataan niin koodi on Githubissa: http://github.com/Nanofus/wordpress-reader-settings -->
 <script>
-var loadCookie, readData, saveCookie, size, typeface;
-
-typeface = "Times New Roman";
-
-size = "100%";
-
-readData = function() {
-  typeface = loadCookie("typeface");
-  size = loadCookie("size");
-  return console.log(typeface + ", " + loadCookie(typeface));
-};
+var loadCookie, loadData, saveCookie, saveData;
 
 loadCookie = function(cname) {
   var c, ca, i, name;
@@ -70,8 +60,23 @@ saveCookie = function(cname, cvalue, exdays) {
   return console.log(document.cookie);
 };
 
-saveCookie("typeface", "Times New Roman", 365);
+saveData = function() {
+  saveCookie("wrs-typeface", document.getElementById("wrs-font").value, 365);
+  saveCookie("wrs-size", document.getElementById("wrs-font-size").value, 365);
+  return saveCookie("wrs-width", document.getElementById("wrs-content-width").value, 365);
+};
 
-readData();
+loadData = function() {
+  var size, typeface, width;
+  typeface = loadCookie("wrs-typeface");
+  size = loadCookie("wrs-size");
+  width = loadCookie("wrs-width");
+  console.log(typeface + ", " + size + ", " + width);
+  document.getElementById("wrs-font").value = typeface;
+  document.getElementById("wrs-font-size").value = size;
+  return document.getElementById("wrs-content-width").value = width;
+};
+
+loadData();
 
 </script>
