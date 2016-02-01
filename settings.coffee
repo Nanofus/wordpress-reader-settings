@@ -101,7 +101,8 @@ replaceCss = ->
         paragraphs.push contentChildren[i]
       if contentChildren[i].nodeType == 1
         contentChildren[i].classList.add("wps-" + size.substring(0, size.length - 1))
-        contentChildren[i].classList.add("wps-line-" + lineHeight)
+        if (contentChildren[i].tagName != 'H1' && contentChildren[i].tagName != 'H2' && contentChildren[i].tagName != 'H3' && contentChildren[i].tagName != 'H4' && contentChildren[i].tagName != 'H5' && contentChildren[i].tagName != 'H6')
+          contentChildren[i].classList.add("wps-line-" + lineHeight)
       i++
     for d, i in paragraphs
       d.classList.add("wps-paragraph-" + paragraphMargin)
