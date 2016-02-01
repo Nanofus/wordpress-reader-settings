@@ -2,7 +2,7 @@ var enabled, lineHeight, loadCookie, loadData, paragraphMargin, replaceCss, rese
 
 rootPath = "/";
 
-rootPathCheck = false;
+rootPathCheck = true;
 
 typeface = '';
 

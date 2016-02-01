@@ -1,6 +1,6 @@
-# Workaround to disable the system on front page, disabled by default
+# Workaround to disable the system on front page, enabled by default
 rootPath = "/"
-rootPathCheck = false
+rootPathCheck = true
 
 typeface = ''
 size = ''
