@@ -2,10 +2,12 @@
 rootPath = "/"
 rootPathCheck = false
 
-typeface = '';
-size = '';
-width = '';
-enabled = true;
+typeface = ''
+size = ''
+width = ''
+lineHeight = ''
+paragraphMargin = ''
+enabled = true
 
 loadCookie = (cname) ->
   name = cname + '='
@@ -30,6 +32,8 @@ saveData = ->
   saveCookie("wrs-typeface", document.getElementById("wrs-font").value, 365)
   saveCookie("wrs-size", document.getElementById("wrs-font-size").value, 365)
   saveCookie("wrs-width", document.getElementById("wrs-content-width").value, 365)
+  saveCookie("wrs-height", document.getElementById("wrs-line-height").value, 365)
+  saveCookie("wrs-margin", document.getElementById("wrs-paragraph-margin").value, 365)
   if document.getElementById("wrs-enabled").checked
     saveCookie("wrs-enabled", "true", 365)
   else
@@ -41,9 +45,13 @@ resetData = ->
   size = "100%"
   width = "600px"
   enabled = "true"
+  lineHeight = "15"
+  paragraphMargin = "24px"
   document.getElementById("wrs-font").value = typeface
   document.getElementById("wrs-font-size").value = size
   document.getElementById("wrs-content-width").value = width
+  document.getElementById("wrs-line-height").value = lineHeight
+  document.getElementById("wrs-paragraph-margin").value = paragraphMargin
   if enabled == "true"
     document.getElementById("wrs-enabled").checked = true
   else
@@ -55,6 +63,8 @@ loadData = ->
   size = loadCookie("wrs-size")
   width = loadCookie("wrs-width")
   enabled = loadCookie("wrs-enabled")
+  lineHeight = loadCookie("wrs-height")
+  paragraphMargin = loadCookie("wrs-margin")
   if typeface == ''
     typeface = "Times New Roman"
   if size == ''
@@ -63,9 +73,15 @@ loadData = ->
     width = "600px"
   if enabled == ''
     enabled = "true"
+  if lineHeight == ''
+    lineHeight = "15"
+  if paragraphMargin == ''
+    paragraphMargin = "24px"
   document.getElementById("wrs-font").value = typeface
   document.getElementById("wrs-font-size").value = size
   document.getElementById("wrs-content-width").value = width
+  document.getElementById("wrs-line-height").value = lineHeight
+  document.getElementById("wrs-paragraph-margin").value = paragraphMargin
   if enabled == "true"
     document.getElementById("wrs-enabled").checked = true
   else
@@ -84,9 +100,11 @@ replaceCss = ->
       if contentChildren[i].nodeName == 'P'
         paragraphs.push contentChildren[i]
       if contentChildren[i].nodeType == 1
-        contentChildren[i].classList.add("wps-" + size.substring(0, size.length - 1));
+        contentChildren[i].classList.add("wps-" + size.substring(0, size.length - 1))
+        contentChildren[i].classList.add("wps-line-" + lineHeight)
       i++
     for d, i in paragraphs
+      d.classList.add("wps-paragraph-" + paragraphMargin)
       if (typeface == "Times New Roman")
         d.classList.add("wps-times")
       else if (typeface == "Arial")
@@ -95,6 +113,14 @@ replaceCss = ->
         d.classList.add("wps-opensans")
       else if (typeface == "Roboto")
         d.classList.add("wps-roboto")
+      else if (typeface == "Roboto Slab")
+        d.classList.add("wps-roboto-slab")
+      else if (typeface == "Lora")
+        d.classList.add("wps-lora")
+      else if (typeface == "Merriweather")
+        d.classList.add("wps-merriweather")
+      else if (typeface == "PT Serif")
+        d.classList.add("wps-pt-serif")
       else if (typeface == "Slabo 27px")
         d.classList.add("wps-slabo")
       else if (typeface == "Source Sans Pro")

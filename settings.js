@@ -1,4 +1,4 @@
-var enabled, loadCookie, loadData, replaceCss, resetData, rootPath, rootPathCheck, saveCookie, saveData, size, typeface, width;
+var enabled, lineHeight, loadCookie, loadData, paragraphMargin, replaceCss, resetData, rootPath, rootPathCheck, saveCookie, saveData, size, typeface, width;
 
 rootPath = "/";
 
@@ -9,6 +9,10 @@ typeface = '';
 size = '';
 
 width = '';
+
+lineHeight = '';
+
+paragraphMargin = '';
 
 enabled = true;
 
@@ -42,6 +46,8 @@ saveData = function() {
   saveCookie("wrs-typeface", document.getElementById("wrs-font").value, 365);
   saveCookie("wrs-size", document.getElementById("wrs-font-size").value, 365);
   saveCookie("wrs-width", document.getElementById("wrs-content-width").value, 365);
+  saveCookie("wrs-height", document.getElementById("wrs-line-height").value, 365);
+  saveCookie("wrs-margin", document.getElementById("wrs-paragraph-margin").value, 365);
   if (document.getElementById("wrs-enabled").checked) {
     saveCookie("wrs-enabled", "true", 365);
   } else {
@@ -55,9 +61,13 @@ resetData = function() {
   size = "100%";
   width = "600px";
   enabled = "true";
+  lineHeight = "15";
+  paragraphMargin = "24px";
   document.getElementById("wrs-font").value = typeface;
   document.getElementById("wrs-font-size").value = size;
   document.getElementById("wrs-content-width").value = width;
+  document.getElementById("wrs-line-height").value = lineHeight;
+  document.getElementById("wrs-paragraph-margin").value = paragraphMargin;
   if (enabled === "true") {
     document.getElementById("wrs-enabled").checked = true;
   } else {
@@ -71,6 +81,8 @@ loadData = function() {
   size = loadCookie("wrs-size");
   width = loadCookie("wrs-width");
   enabled = loadCookie("wrs-enabled");
+  lineHeight = loadCookie("wrs-height");
+  paragraphMargin = loadCookie("wrs-margin");
   if (typeface === '') {
     typeface = "Times New Roman";
   }
@@ -83,9 +95,17 @@ loadData = function() {
   if (enabled === '') {
     enabled = "true";
   }
+  if (lineHeight === '') {
+    lineHeight = "15";
+  }
+  if (paragraphMargin === '') {
+    paragraphMargin = "24px";
+  }
   document.getElementById("wrs-font").value = typeface;
   document.getElementById("wrs-font-size").value = size;
   document.getElementById("wrs-content-width").value = width;
+  document.getElementById("wrs-line-height").value = lineHeight;
+  document.getElementById("wrs-paragraph-margin").value = paragraphMargin;
   if (enabled === "true") {
     document.getElementById("wrs-enabled").checked = true;
   } else {
@@ -110,12 +130,14 @@ replaceCss = function() {
       }
       if (contentChildren[i].nodeType === 1) {
         contentChildren[i].classList.add("wps-" + size.substring(0, size.length - 1));
+        contentChildren[i].classList.add("wps-line-" + lineHeight);
       }
       i++;
     }
     results = [];
     for (i = j = 0, len = paragraphs.length; j < len; i = ++j) {
       d = paragraphs[i];
+      d.classList.add("wps-paragraph-" + paragraphMargin);
       if (typeface === "Times New Roman") {
         results.push(d.classList.add("wps-times"));
       } else if (typeface === "Arial") {
@@ -124,6 +146,14 @@ replaceCss = function() {
         results.push(d.classList.add("wps-opensans"));
       } else if (typeface === "Roboto") {
         results.push(d.classList.add("wps-roboto"));
+      } else if (typeface === "Roboto Slab") {
+        results.push(d.classList.add("wps-roboto-slab"));
+      } else if (typeface === "Lora") {
+        results.push(d.classList.add("wps-lora"));
+      } else if (typeface === "Merriweather") {
+        results.push(d.classList.add("wps-merriweather"));
+      } else if (typeface === "PT Serif") {
+        results.push(d.classList.add("wps-pt-serif"));
       } else if (typeface === "Slabo 27px") {
         results.push(d.classList.add("wps-slabo"));
       } else if (typeface === "Source Sans Pro") {
